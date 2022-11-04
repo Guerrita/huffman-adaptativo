@@ -8,13 +8,15 @@ alfabeto = ['!', '#', '$', '%', '&', '(', ')', '*','+', ',', '-', '.', '/',
             '[',']','^','_','`',
             'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p',
             'q','r','s','t','u','v','w','x','y','z',
-            '{','|','}','~', ' ',
+            '{','|','}','~', ' ','\\'
             'Á','É','Í','Ó','Ú','Ñ',
             'á','é','í','ó','ú','ñ', 
             ]
 
 data={}
 done = {}
+routes = {}
+encodedText=""
 id = 107
 
 print('a' in alfabeto)
@@ -49,3 +51,28 @@ while len(sorted_keys) >1:
   sorted_keys = sorted(data, key= lambda x: data[x]['peso'], reverse=True)
   done[list(data.keys())[0]] = list(data.values())[0]
   print('\n', sorted_keys)
+
+print("done")
+
+def trace(currentNode, char, route):
+  if 'left' in done[currentNode]:
+    if char in done[currentNode]['left']:
+      newRoute = route + '0'
+      trace(done[currentNode['left']], char, newRoute)
+  if 'right' in done[currentNode]:
+    if char in done[currentNode]['right']:
+      newRoute = route + '1'
+      trace(done[currentNode['right']], char, newRoute)
+  if 'left' not in done[currentNode]:
+    if 'right' not in done[currentNode]:
+      routes[char] = route
+
+rootNode = list(data.keys())[0]
+for i in rootNode:
+  trace(rootNode, i , '')
+
+for i in text:
+  encodedText+= routes[i]
+
+print('\n\nRoutes: ', routes)
+print('\n',encodedText)
